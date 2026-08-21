@@ -84,6 +84,10 @@ That library is unofficial and uses undocumented Google endpoints. It is isolate
 
 Never commit NotebookLM cookies, session files, or master tokens.
 
+## LocalPaperMaxing
+
+A separate `local-papermaxing` branch contains a browser-first version intended for low-cost/public deployments. Papers, extracted text, notes, settings, and generated results stay in the browser using IndexedDB. Vercel Functions are used only as stateless provider proxies when cloud AI is enabled.
+
 ## Repository layout
 
 ```text
@@ -99,9 +103,6 @@ packages/
 services/
   parser/                  FastAPI + GROBID integration
   notebooklm/              optional NotebookLM gateway
-
-docs/                      architecture and product docs
-prompts/                   desktop/mobile design prompts
 ```
 
 ## Local development
@@ -139,31 +140,16 @@ Root Directory: apps/web
 Framework Preset: Next.js
 ```
 
-The public landing page does not require external provider credentials. Server-side NotebookLM integration requires `NOTEBOOKLM_API_URL` and `NOTEBOOKLM_SERVER_TOKEN`.
-
-Do not expose either value with a `NEXT_PUBLIC_` prefix.
+Do not expose model-provider secrets with a `NEXT_PUBLIC_` prefix.
 
 ## Status
 
-The repository currently includes the UI shell, provider contracts, parser service scaffold, NotebookLM integration scaffold, database migration, product documentation, and design prompts.
+The repository is under active development. Parsing, provider behavior, storage modes, and UI contracts may change before the first stable release.
 
-The following are not yet production-complete:
+## License
 
-- PDF upload/storage
-- TEI normalization
-- claim extraction
-- claim-to-evidence alignment
-- synchronized PDF highlighting
-- production authentication
-- multi-tenant provider credentials
-- full model-provider implementations
+MIT License.
 
-## Copyright
+Copyright © 2026 Mario Ibarra Gómez.
 
-Copyright © 2026 Mario Ibarra Gómez. All rights reserved.
-
-The source is publicly available for viewing, review, and demonstration. No license is granted to copy, modify, distribute, sublicense, sell, or otherwise commercially exploit this software without prior written permission from the copyright holder.
-
-This repository intentionally contains **no open-source LICENSE file**. See [`COPYRIGHT.md`](COPYRIGHT.md).
-
-Third-party dependencies remain subject to their respective licenses.
+See [`LICENSE`](LICENSE) and [`COPYRIGHT.md`](COPYRIGHT.md).
