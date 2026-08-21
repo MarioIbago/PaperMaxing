@@ -1,0 +1,7 @@
+CREATE EXTENSION IF NOT EXISTS vector;
+CREATE TABLE IF NOT EXISTS papers (id uuid PRIMARY KEY, sha256 text UNIQUE, title text, doi text, created_at timestamptz NOT NULL DEFAULT now());
+CREATE TABLE IF NOT EXISTS sections (id uuid PRIMARY KEY, paper_id uuid NOT NULL REFERENCES papers(id) ON DELETE CASCADE, title text, ordinal integer NOT NULL, page_start integer, page_end integer);
+CREATE TABLE IF NOT EXISTS chunks (id uuid PRIMARY KEY, paper_id uuid NOT NULL REFERENCES papers(id) ON DELETE CASCADE, section_id uuid REFERENCES sections(id) ON DELETE CASCADE, source_text text NOT NULL, page_start integer, page_end integer, embedding vector(1536));
+CREATE TABLE IF NOT EXISTS claims (id uuid PRIMARY KEY, paper_id uuid NOT NULL REFERENCES papers(id) ON DELETE CASCADE, claim_text text NOT NULL, claim_type text NOT NULL, provenance_mode text NOT NULL, confidence double precision, created_at timestamptz NOT NULL DEFAULT now());
+CREATE TABLE IF NOT EXISTS evidence (id uuid PRIMARY KEY, claim_id uuid NOT NULL REFERENCES claims(id) ON DELETE CASCADE, chunk_id uuid REFERENCES chunks(id) ON DELETE SET NULL, relation text NOT NULL, exact_text text, page integer, section_label text);
+CREATE TABLE IF NOT EXISTS processing_jobs (id uuid PRIMARY KEY, paper_id uuid REFERENCES papers(id) ON DELETE CASCADE, stage text NOT NULL, status text NOT NULL, progress integer NOT NULL DEFAULT 0, error text, created_at timestamptz NOT NULL DEFAULT now(), updated_at timestamptz NOT NULL DEFAULT now());

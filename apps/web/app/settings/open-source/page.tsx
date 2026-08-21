@@ -1,0 +1,1 @@
+export default function Page(){return <main style={{padding:40}}><h1>Source / Self-host / Settings</h1><p>PaperMaxing publishes its source for review and demonstration. Copyright © 2026 Mario Ibarra Gómez. All rights reserved.</p></main>}
