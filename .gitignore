@@ -1,0 +1,15 @@
+node_modules
+.next
+.vercel
+.env
+.env.local
+.DS_Store
+__pycache__
+.pytest_cache
+.venv
+*.pyc
+storage/
+postgres-data/
+
+# NotebookLM auth/session state
+.papermaxing/
