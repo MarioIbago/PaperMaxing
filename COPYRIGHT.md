@@ -1,8 +1,10 @@
 # Copyright
 
-Copyright © 2026 Mario Ibarra Gómez. All rights reserved.
+Copyright © 2026 Mario Ibarra Gómez.
 
-The source code in this repository is publicly available for viewing, review, and demonstration. No license is granted to copy, modify, distribute, sublicense, sell, or otherwise commercially exploit this software without prior written permission from the copyright holder.
+PaperMaxing is licensed under the MIT License. See [`LICENSE`](LICENSE).
+
+The MIT License allows use, copying, modification, distribution, sublicensing, and sale of copies of the software, provided that the copyright notice and license text are preserved in copies or substantial portions of the software.
 
 Third-party dependencies remain subject to their respective licenses.
 
