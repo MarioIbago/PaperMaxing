@@ -1,0 +1,40 @@
+services:
+  postgres:
+    image: pgvector/pgvector:0.8.6-pg17
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-papermaxing}
+      POSTGRES_USER: ${POSTGRES_USER:-papermaxing}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-papermaxing}
+    ports: ["5432:5432"]
+    volumes:
+      - papermaxing_pg:/var/lib/postgresql/data
+      - ./packages/database/migrations:/docker-entrypoint-initdb.d:ro
+  grobid:
+    image: grobid/grobid:0.9.0-crf
+    ports: ["8070:8070"]
+    restart: unless-stopped
+  parser:
+    build: { context: ./services/parser }
+    environment:
+      GROBID_URL: http://grobid:8070
+    ports: ["8000:8000"]
+    depends_on: [grobid]
+  notebooklm:
+    build: { context: ./services/notebooklm }
+    environment:
+      NOTEBOOKLM_SERVER_HOST: 0.0.0.0
+      NOTEBOOKLM_SERVER_PORT: 8100
+      NOTEBOOKLM_SERVER_ALLOW_EXTERNAL_BIND: "1"
+      NOTEBOOKLM_SERVER_TOKEN: ${NOTEBOOKLM_SERVER_TOKEN:-change-me-with-a-long-random-secret}
+      NOTEBOOKLM_PROFILE: ${NOTEBOOKLM_PROFILE:-papermaxing}
+      NOTEBOOKLM_HOME: /data/notebooklm
+    ports: ["8100:8100"]
+    volumes:
+      - ${NOTEBOOKLM_HOME_HOST:-./.papermaxing/notebooklm}:/data/notebooklm
+  ollama:
+    image: ollama/ollama:latest
+    ports: ["11434:11434"]
+    volumes: ["ollama_data:/root/.ollama"]
+volumes:
+  papermaxing_pg:
+  ollama_data:
