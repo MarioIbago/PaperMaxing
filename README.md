@@ -2,149 +2,187 @@
 
 **Trace claims. Inspect evidence. Read the source.**
 
-PaperMaxing is a research-paper workspace for inspecting claims, evidence, figures, methods, references, and related work without losing the link to the original source.
+PaperMaxing is a research-paper workspace with browser-local paper storage, pluggable model providers, and an optional NotebookLM grounding gateway.
 
-The current repository is an early technical starter. The web shell is deployable, while the scientific analysis pipeline is still being implemented.
+The repository includes a visual demo based on *Attention Is All You Need*, but imported papers no longer reuse that demo data. A PDF, DOI, or paper URL now creates a separate local paper record and analysis is generated only when a configured provider is called.
 
-## What it is
+## What works now
 
-PaperMaxing is not a generic “chat with PDF” interface. The product is organized around provenance:
+- PDF import with text extraction in the browser using PDF.js
+- DOI metadata/abstract resolution through Crossref
+- URL text import
+- Paper/PDF cache in IndexedDB
+- Provider/model/grounding preference in localStorage
+- Real server-side provider calls for:
+  - OpenRouter
+  - OpenAI
+  - Anthropic / Claude
+  - Google Gemini
+  - Ollama
+  - OpenAI-compatible endpoints
+- Provider configuration discovery without leaking secrets
+- Real provider connection test from Settings
+- Paper overview generation from imported text
+- Grounded Q&A over locally extracted paper text
+- Optional NotebookLM ingestion and chat through `notebooklm-py`
+- Responsive desktop/mobile interface
+- MIT license
 
-- **PAPER SAYS** — a statement directly supported by the paper.
-- **SOURCE DATA** — a result, table, figure, statistic, or other source evidence.
-- **PAPERMAXING EXPLAINS** — an explanation of source material.
-- **PAPERMAXING INFERS** — an interpretation that is not explicitly stated by the authors.
-
-The interface is designed so a reader can answer three questions at any point:
-
-1. Who is saying this?
-2. What evidence supports it?
-3. Where can I verify it in the source?
-
-## Planned product surfaces
-
-- Paper overview and research question
-- Claims linked to exact evidence
-- Synchronized PDF passages
-- Figure and table decoder
-- Methods and limitations
-- Author and citation graph
-- Multi-paper comparison
-- Research notebook
-- Grounded question answering
-
-## Architecture
+## Data flow
 
 ```text
-PDF / DOI / arXiv / URL
-        │
-        ├──────────────► GROBID
-        │                  │
-        │             document structure
-        │                  │
-        ▼                  │
-Research engine            │
-        │                  │
-        ├─ NotebookLM      │
-        ├─ Local RAG       │
-        └─ Direct context  │
-        │                  │
-        └────────┬─────────┘
-                 ▼
-          Structured paper
-                 │
-        claims / evidence / figures
-                 │
-                 ▼
-              PaperMaxing
+PDF
+  -> PDF.js in the browser
+  -> extracted text + PDF Blob in IndexedDB
+  -> /api/analyze or /api/chat
+  -> selected model provider
+
+DOI / URL
+  -> /api/papers/resolve
+  -> source text / metadata cached in IndexedDB
+  -> selected model provider
 ```
 
-The domain layer is provider-agnostic. NotebookLM is one optional research engine, not a hard dependency.
-
-## Model providers
-
-PaperMaxing is designed to support pluggable model providers, including:
-
-- NotebookLM through `notebooklm-py`
-- OpenRouter
-- OpenAI
-- Anthropic
-- Google Gemini
-- Ollama
-- OpenAI-compatible endpoints
-- Local retrieval / local models
-
-Provider support is implemented behind adapters so the rest of the application does not depend on a single vendor.
-
-## NotebookLM
-
-NotebookLM support uses the community project [`teng-lin/notebooklm-py`](https://github.com/teng-lin/notebooklm-py).
-
-That library is unofficial and uses undocumented Google endpoints. It is isolated behind a gateway/provider adapter so PaperMaxing can continue to work if that integration changes or is disabled.
-
-Never commit NotebookLM cookies, session files, or master tokens.
-
-## LocalPaperMaxing
-
-A separate `local-papermaxing` branch contains a browser-first version intended for low-cost/public deployments. Papers, extracted text, notes, settings, and generated results stay in the browser using IndexedDB. Vercel Functions are used only as stateless provider proxies when cloud AI is enabled.
-
-## Repository layout
+If NotebookLM is selected:
 
 ```text
-apps/
-  web/                     Next.js web application
-
-packages/
-  core/                    domain contracts
-  database/                migrations
-  providers/               provider adapters
-  ui/                      shared UI package
-
-services/
-  parser/                  FastAPI + GROBID integration
-  notebooklm/              optional NotebookLM gateway
+Browser
+  -> PaperMaxing /api/notebooklm/*
+  -> private NotebookLM gateway
+  -> notebooklm-py 0.8.1
+  -> Google NotebookLM / Gemini Notebook
 ```
+
+Google session credentials and the NotebookLM bearer token never need to be exposed to browser JavaScript.
+
+## Provider configuration
+
+Copy the environment file:
+
+```bash
+cp .env.example .env
+```
+
+The easiest cloud setup is OpenRouter:
+
+```env
+RESEARCH_ENGINE=direct
+OPENROUTER_API_KEY=your-key
+OPENROUTER_MODEL=openrouter/auto
+```
+
+Or configure a direct provider:
+
+```env
+OPENAI_API_KEY=
+OPENAI_MODEL=gpt-5.6-luna
+
+ANTHROPIC_API_KEY=
+ANTHROPIC_MODEL=claude-sonnet-5
+
+GEMINI_API_KEY=
+GEMINI_MODEL=gemini-3.7-flash
+```
+
+For Ollama:
+
+```env
+OLLAMA_BASE_URL=http://localhost:11434
+OLLAMA_MODEL=qwen3:8b
+```
+
+The active provider and model can be changed at runtime in **Settings → Model provider**. The selection is stored only in that browser. Provider keys remain server-side.
 
 ## Local development
 
-Requirements:
-
-- Node.js 22+
-- Docker / Docker Compose
-- Python 3.12+ for service development
+Requires Node.js 22+.
 
 ```bash
-git clone https://github.com/MarioIbago/papermaxing.git
-cd papermaxing
+git clone https://github.com/MarioIbago/PaperMaxing.git
+cd PaperMaxing
 cp .env.example .env
 npm install
 npm run dev
 ```
 
-The web app runs at `http://localhost:3000`.
+Open `http://localhost:3000`.
 
-For the complete local services:
+The core browser-local workflow does **not** require PostgreSQL, GROBID, or NotebookLM.
+
+Optional services can be started separately:
 
 ```bash
-docker compose up -d
+docker compose up -d postgres grobid parser
 ```
+
+Ollama:
+
+```bash
+docker compose up -d ollama
+```
+
+NotebookLM has an authentication step before its container is useful. See [`services/notebooklm/README.md`](services/notebooklm/README.md).
+
+## NotebookLM
+
+NotebookLM support uses the community project [`teng-lin/notebooklm-py`](https://github.com/teng-lin/notebooklm-py), pinned to `0.8.1`.
+
+It is unofficial and relies on undocumented Google endpoints. PaperMaxing isolates it behind a gateway adapter so it is optional and replaceable.
+
+Do not commit Google cookies, NotebookLM auth files, auth JSON, master tokens, or `NOTEBOOKLM_SERVER_TOKEN`.
 
 ## Vercel
 
-The web application lives in `apps/web`.
+The Next.js app is in `apps/web`.
 
-When importing this repository into Vercel, set:
+For a Git import use:
 
 ```text
 Root Directory: apps/web
-Framework Preset: Next.js
+Framework: Next.js
 ```
 
-Do not expose model-provider secrets with a `NEXT_PUBLIC_` prefix.
+Add only the provider environment variables you intend to use. Do not use `NEXT_PUBLIC_` for API keys.
 
-## Status
+The normal direct-grounding workflow is stateless on Vercel: the paper and generated cache live in IndexedDB in the user's browser. The function receives paper text only when the user requests an analysis or answer.
 
-The repository is under active development. Parsing, provider behavior, storage modes, and UI contracts may change before the first stable release.
+NotebookLM is different: its Google session needs persistent/private state, so the NotebookLM gateway should run on a separate private container host or locally rather than inside Vercel Functions.
+
+## Privacy model
+
+Local by default means:
+
+- the imported PDF Blob is stored in browser IndexedDB;
+- extracted paper text is stored in browser IndexedDB;
+- provider/model settings are stored in localStorage;
+- PaperMaxing does not require a central database for this mode.
+
+If a cloud model provider is selected, relevant paper text is sent to that provider when the user clicks Analyze or asks a question. "Local cache" does not mean "offline inference" unless Ollama or another local endpoint is selected.
+
+## Demo content
+
+`/papers/attention-is-all-you-need` remains a visual/product demo. It is intentionally separate from imported local papers and is labeled as demo content on the landing preview.
+
+## Repository layout
+
+```text
+apps/web/
+  app/api/                 stateless provider + NotebookLM proxy routes
+  app/local-papers/        real imported-paper workspace
+  src/lib/local-papers.ts  IndexedDB cache
+  src/lib/pdf.ts           browser PDF extraction
+  src/lib/providers/       server provider adapters
+
+services/notebooklm/       optional notebooklm-py gateway
+services/parser/           optional GROBID parser service
+packages/                  domain/provider/database scaffolding
+```
+
+## Verification
+
+The GitHub Actions workflow installs dependencies, type-checks/builds the Next.js application, starts the production server, and smoke-tests the landing page, Settings, `/api/health`, and `/api/providers`.
+
+A successful build proves the application wiring and routes compile/run. Live inference still requires a valid key for the chosen provider. Live NotebookLM also requires an authenticated Google NotebookLM session.
 
 ## License
 
@@ -152,4 +190,4 @@ MIT License.
 
 Copyright © 2026 Mario Ibarra Gómez.
 
-See [`LICENSE`](LICENSE) and [`COPYRIGHT.md`](COPYRIGHT.md).
+See [`LICENSE`](LICENSE).
