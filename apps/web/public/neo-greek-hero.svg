@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" role="img" aria-labelledby="title desc">
+  <title id="title">PaperMaxing neo-Greek research hero</title>
+  <desc id="desc">A bright parchment colonnade with classical columns, luminous research nodes, and abstract code fragments.</desc>
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fffdf6"/><stop offset="0.55" stop-color="#f5efe1"/><stop offset="1" stop-color="#eee2cb"/></linearGradient>
+    <radialGradient id="glow" cx="50%" cy="40%" r="58%"><stop offset="0" stop-color="#ffffff" stop-opacity=".95"/><stop offset=".55" stop-color="#f7f0df" stop-opacity=".72"/><stop offset="1" stop-color="#d9c5a0" stop-opacity="0"/></radialGradient>
+    <linearGradient id="stone" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#cdbb99"/><stop offset=".45" stop-color="#fffaf0"/><stop offset=".8" stop-color="#d7c29c"/><stop offset="1" stop-color="#a9936f"/></linearGradient>
+    <filter id="soft"><feGaussianBlur stdDeviation="18"/></filter>
+    <filter id="grain"><feTurbulence type="fractalNoise" baseFrequency=".7" numOctaves="3" seed="5" result="n"/><feColorMatrix in="n" type="saturate" values="0"/><feComponentTransfer><feFuncA type="table" tableValues="0 .06"/></feComponentTransfer></filter>
+    <pattern id="grid" width="28" height="28" patternUnits="userSpaceOnUse"><path d="M28 0H0V28" fill="none" stroke="#6d5aa7" stroke-opacity=".06"/></pattern>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#paper)"/>
+  <rect width="1920" height="1080" fill="url(#glow)"/>
+  <rect width="1920" height="1080" fill="url(#grid)"/>
+  <ellipse cx="960" cy="1020" rx="760" ry="120" fill="#cbb994" opacity=".22" filter="url(#soft)"/>
+  <path d="M0 900C330 820 570 860 820 920s585 75 1100-50v210H0Z" fill="#c6af86" opacity=".22"/>
+  <g opacity=".82">
+    <g transform="translate(170 210)"><rect x="80" y="170" width="108" height="590" rx="10" fill="url(#stone)"/><rect x="55" y="148" width="158" height="45" rx="8" fill="#d3bf9d"/><path d="M50 150c20-72 52-95 84-95s65 20 91 95Z" fill="#c8b18d"/><path d="M78 80c24 38 35 46 56 46s38-10 65-46" fill="none" stroke="#9e8764" stroke-width="14"/><rect x="60" y="760" width="148" height="30" fill="#c1aa83"/><rect x="44" y="790" width="180" height="38" fill="#b49a71"/></g>
+    <g transform="translate(1450 175) scale(.9)"><rect x="80" y="170" width="108" height="590" rx="10" fill="url(#stone)"/><rect x="55" y="148" width="158" height="45" rx="8" fill="#d3bf9d"/><path d="M50 150c20-72 52-95 84-95s65 20 91 95Z" fill="#c8b18d"/><path d="M78 80c24 38 35 46 56 46s38-10 65-46" fill="none" stroke="#9e8764" stroke-width="14"/><rect x="60" y="760" width="148" height="30" fill="#c1aa83"/><rect x="44" y="790" width="180" height="38" fill="#b49a71"/></g>
+    <g transform="translate(1280 250) scale(.72)" opacity=".7"><rect x="80" y="170" width="108" height="590" rx="10" fill="url(#stone)"/><rect x="55" y="148" width="158" height="45" rx="8" fill="#d3bf9d"/><path d="M50 150c20-72 52-95 84-95s65 20 91 95Z" fill="#c8b18d"/><rect x="60" y="760" width="148" height="30" fill="#c1aa83"/></g>
+  </g>
+  <g fill="none" stroke="#6d5aa7" opacity=".23"><path d="M510 270C690 110 810 170 960 325s290 184 446 35" stroke-width="3"/><path d="M560 710c188-170 350-150 520-36s280 123 420 15" stroke-width="2"/></g>
+  <g fill="#6d5aa7"><circle cx="580" cy="240" r="8" opacity=".55"/><circle cx="960" cy="325" r="12" opacity=".68"/><circle cx="1404" cy="360" r="7" opacity=".48"/><circle cx="760" cy="690" r="7" opacity=".4"/><circle cx="1112" cy="665" r="9" opacity=".5"/></g>
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="24" font-weight="600" opacity=".32">
+    <text x="88" y="120" fill="#b43f83">010010  CLAIM  EVIDENCE</text><text x="72" y="157" fill="#7a7a4c">METHOD  SOURCE  1706.03762</text><text x="1510" y="150" fill="#b43f83">{CITATION}</text><text x="1518" y="190" fill="#4c99a8">RAG // SOURCE // TRACE</text>
+    <text x="720" y="955" fill="#6d5aa7">PAPER_SAYS  →  SOURCE_DATA  →  VERIFY</text>
+  </g>
+  <g opacity=".36"><rect x="800" y="165" width="210" height="10" rx="5" fill="#38b6b2"/><rect x="800" y="190" width="142" height="10" rx="5" fill="#38b6b2"/><rect x="1050" y="176" width="18" height="18" fill="#d94e9d"/><rect x="1082" y="138" width="30" height="30" fill="#d94e9d"/><rect x="744" y="214" width="14" height="14" fill="#7f9b36"/></g>
+  <rect width="1920" height="1080" filter="url(#grain)" opacity=".85"/>
+</svg>
