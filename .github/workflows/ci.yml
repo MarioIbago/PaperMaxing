@@ -11,7 +11,7 @@ permissions:
 jobs:
   web:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
 
     steps:
       - name: Checkout
@@ -32,7 +32,12 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Production smoke test
+      - name: Install browser smoke-test runtime
+        run: |
+          npm install --no-save playwright@1.62.1
+          npx playwright install --with-deps chromium
+
+      - name: Production and responsive smoke tests
         shell: bash
         run: |
           set -euo pipefail
@@ -79,3 +84,5 @@ jobs:
             --data '{"provider":"openrouter","model":"openrouter/auto"}')
           test "$HTTP_CODE" = "502"
           grep -q 'OPENROUTER_API_KEY' /tmp/provider-test.json
+
+          PAPERMAXING_TEST_URL=http://127.0.0.1:3000 node apps/web/scripts/responsive-smoke.mjs
