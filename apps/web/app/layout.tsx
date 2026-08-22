@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./functional.css";
 
 export const metadata: Metadata = {
   title: "PaperMaxing",
-  description: "Master any research paper with traceable claims and evidence.",
+  description: "Read research papers with local caching, pluggable model providers, and explicit grounding.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
