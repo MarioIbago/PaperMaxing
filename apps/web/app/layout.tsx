@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import "./functional.css";
+import "./neo-greek.css";
 
 export const metadata: Metadata = {
   title: "PaperMaxing",
