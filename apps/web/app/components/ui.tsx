@@ -1,7 +1,23 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { Icon, IconName } from "./icons";
+
+export function ActionLink({ href, children, className = "", external, target, onClick }: {
+  href: string;
+  children: React.ReactNode;
+  className?: string;
+  external?: boolean;
+  target?: "_blank" | "_self";
+  onClick?: () => void;
+}) {
+  const isExternal = external ?? /^(https?:|mailto:)/.test(href);
+  if (isExternal) {
+    return <a href={href} className={className} target={target ?? (href.startsWith("http") ? "_blank" : undefined)} rel={href.startsWith("http") ? "noreferrer" : undefined} onClick={onClick}>{children}</a>;
+  }
+  return <Link href={href} className={className} onClick={onClick}>{children}</Link>;
+}
 
 export function GreekDivider({ motif = "laurel", className = "" }: { motif?: "laurel" | "dot" | "none"; className?: string }) {
   return <div className={`greek-divider ${className}`} aria-hidden="true"><span /><b>{motif === "laurel" ? "❧" : motif === "dot" ? "•" : ""}</b><span /></div>;
@@ -20,8 +36,9 @@ export function ProvenanceBadge({ kind }: { kind: ProvenanceKind }) {
   return <span className={`provenance provenance-${kind}`}><Icon name={kind === "paper" ? "quote" : kind === "source" ? "chart" : kind === "explains" ? "lightbulb" : "graph"} size={14} />{provenanceLabels[kind]}</span>;
 }
 
-export function SourceChip({ children, icon = "file", accent = "" }: { children: React.ReactNode; icon?: IconName; accent?: string }) {
-  return <button type="button" className={`source-chip ${accent}`}><Icon name={icon} size={13} />{children}<Icon name="external" size={11} /></button>;
+export function SourceChip({ children, icon = "file", accent = "", href }: { children: React.ReactNode; icon?: IconName; accent?: string; href?: string }) {
+  const content = <><Icon name={icon} size={13} />{children}<Icon name="external" size={11} /></>;
+  return href ? <ActionLink href={href} className={`source-chip ${accent}`} external={href.startsWith("http")}>{content}</ActionLink> : <button type="button" className={`source-chip ${accent}`}>{content}</button>;
 }
 
 export function EvidenceMeter({ level = "Strong", values = [4, 4, 4, 3], color = "violet" }: { level?: string; values?: number[]; color?: "violet" | "gold" | "olive" }) {
@@ -44,8 +61,8 @@ export function SectionTitle({ eyebrow, title, description, action }: { eyebrow?
   return <div className="section-title">{eyebrow ? <span className="eyebrow">{eyebrow}</span> : null}<div><h1>{title}</h1>{description ? <p>{description}</p> : null}</div>{action ? <div className="section-title-action">{action}</div> : null}</div>;
 }
 
-export function SelectButton({ children, icon = "chevronDown", className = "" }: { children: React.ReactNode; icon?: IconName; className?: string }) {
-  return <button type="button" className={`select-button ${className}`}>{children}<Icon name={icon} size={15} /></button>;
+export function SelectButton({ children, icon = "chevronDown", className = "", onClick, ariaLabel }: { children: React.ReactNode; icon?: IconName; className?: string; onClick?: () => void; ariaLabel?: string }) {
+  return <button type="button" className={`select-button ${className}`} onClick={onClick} aria-label={ariaLabel}>{children}<Icon name={icon} size={15} /></button>;
 }
 
 export function StatusIcon({ tone = "green", name = "check" }: { tone?: "green" | "gold" | "red" | "violet"; name?: IconName }) {
@@ -57,14 +74,33 @@ export function Toggle({ initial = false, label, description }: { initial?: bool
   return <button type="button" className="toggle-row" onClick={() => setActive((value) => !value)} aria-pressed={active}><span><strong>{label}</strong>{description ? <small>{description}</small> : null}</span><i className={active ? "is-on" : ""}><b /></i></button>;
 }
 
-export function CopyButton({ text = "Copy" }: { text?: string }) {
+export function CopyButton({ text = "Copy", value = "" }: { text?: string; value?: string }) {
   const [copied, setCopied] = useState(false);
-  return <button type="button" className="copy-button" onClick={() => { setCopied(true); window.setTimeout(() => setCopied(false), 1300); }}><Icon name={copied ? "check" : "copy"} size={13} />{copied ? "Copied" : text}</button>;
+  const copy = async () => {
+    if (value && navigator.clipboard) await navigator.clipboard.writeText(value);
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 1300);
+  };
+  return <button type="button" className="copy-button" onClick={copy}><Icon name={copied ? "check" : "copy"} size={13} />{copied ? "Copied" : text}</button>;
+}
+
+export function DownloadButton({ filename, content, children, className = "button button-outline" }: { filename: string; content: string; children: React.ReactNode; className?: string }) {
+  const [downloaded, setDownloaded] = useState(false);
+  const download = () => {
+    const url = URL.createObjectURL(new Blob([content], { type: "text/plain;charset=utf-8" }));
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    link.click();
+    URL.revokeObjectURL(url);
+    setDownloaded(true);
+    window.setTimeout(() => setDownloaded(false), 1600);
+  };
+  return <button type="button" className={className} onClick={download}><Icon name={downloaded ? "check" : "download"} size={16} />{downloaded ? "Downloaded" : children}</button>;
 }
 
 export function NumberBadge({ children }: { children: React.ReactNode }) { return <span className="number-badge">{children}</span>; }
 
 export function PrivacyLine({ text = "Your files are private and never shared." }: { text?: string }) {
-  return <div className="privacy-line"><Icon name="shield" size={17} /><span>{text}</span><a href="#privacy">Learn more <Icon name="arrow" size={14} /></a></div>;
+  return <div className="privacy-line"><Icon name="shield" size={17} /><span>{text}</span><ActionLink href="/settings/open-source#privacy">Learn more <Icon name="arrow" size={14} /></ActionLink></div>;
 }
-

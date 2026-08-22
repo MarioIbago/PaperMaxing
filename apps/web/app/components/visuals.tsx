@@ -43,7 +43,7 @@ export function NetworkGraph({ mini = false }: { mini?: boolean }) {
         <path d="M164 112 80 220M164 112 276 58M540 105 653 200M552 384 652 291M160 393 74 317M276 58 360 72M653 200 552 384M74 317 160 393" stroke="#c4b8a0" strokeWidth="1.6" strokeDasharray="6 7" />
       </g>
       <g fontFamily="Georgia, serif" textAnchor="middle">
-        <circle cx="360" cy="255" r="45" fill="#fbf8f0" stroke="#6b4da6" strokeWidth="3" /><text x="360" y="251" fontSize="15" fill="#3f2c72">Yasmin</text><text x="360" y="271" fontSize="15" fill="#3f2c72">Vaswani</text>
+        <circle cx="360" cy="255" r="45" fill="#fbf8f0" stroke="#6b4da6" strokeWidth="3" /><text x="360" y="251" fontSize="15" fill="#3f2c72">Ashish</text><text x="360" y="271" fontSize="15" fill="#3f2c72">Vaswani</text>
         <circle cx="164" cy="112" r="28" fill="#f7f3e9" stroke="#6b4da6" strokeWidth="2" /><text x="164" y="108" fontSize="13">Noam</text><text x="164" y="124" fontSize="13">Shazeer</text>
         <circle cx="540" cy="105" r="28" fill="#f7f3e9" stroke="#6b4da6" strokeWidth="2" /><text x="540" y="101" fontSize="13">Niki</text><text x="540" y="117" fontSize="13">Parmar</text>
         <circle cx="160" cy="393" r="28" fill="#f7f3e9" stroke="#6b4da6" strokeWidth="2" /><text x="160" y="389" fontSize="13">Jakob</text><text x="160" y="405" fontSize="13">Uszkoreit</text>
@@ -64,7 +64,6 @@ export function MiniGraph() {
   return <svg className="mini-graph" viewBox="0 0 260 150" role="img" aria-label="Small research graph"><g fill="none" stroke="#8977b4" strokeWidth="1.5"><path d="M130 75 54 36M130 75l75-39M130 75l-74 42M130 75l78 43" /></g><circle cx="130" cy="75" r="17" fill="#eee8f8" stroke="#6c51a0" strokeWidth="2" /><circle cx="54" cy="36" r="10" fill="#eef5fb" stroke="#7da8cc" /><circle cx="205" cy="36" r="10" fill="#fbf3df" stroke="#b69b64" /><circle cx="56" cy="117" r="10" fill="#eef5fb" stroke="#7da8cc" /><circle cx="208" cy="118" r="10" fill="#f0f7ec" stroke="#9bbc8c" /></svg>;
 }
 
-export function FigureThumbnail({ active = false, variant = 0 }: { active?: boolean; variant?: number }) {
-  return <div className={`figure-thumb ${active ? "is-active" : ""}`}><div className={`thumb-art thumb-art-${variant}`}><TransformerFigure mini /></div><span>Fig. {variant === 0 ? 2 : variant}</span>{active ? <b>✓</b> : null}</div>;
+export function FigureThumbnail({ active = false, variant = 0, onClick }: { active?: boolean; variant?: number; onClick?: () => void }) {
+  return <button type="button" className={`figure-thumb ${active ? "is-active" : ""}`} onClick={onClick} aria-pressed={active}><div className={`thumb-art thumb-art-${variant}`}><TransformerFigure mini /></div><span>Fig. {variant === 0 ? 2 : variant}</span>{active ? <b>✓</b> : null}</button>;
 }
-

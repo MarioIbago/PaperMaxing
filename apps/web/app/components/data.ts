@@ -1,3 +1,18 @@
+export const paperLinks = {
+  abstract: "https://arxiv.org/abs/1706.03762",
+  pdf: "https://arxiv.org/pdf/1706.03762.pdf",
+  doi: "https://doi.org/10.48550/arXiv.1706.03762",
+} as const;
+
+export const repositoryLinks = {
+  repository: "https://github.com/MarioIbago/PaperMaxing",
+  profile: "https://github.com/MarioIbago",
+  contributing: "https://github.com/MarioIbago/PaperMaxing/blob/main/CONTRIBUTING.md",
+  license: "https://github.com/MarioIbago/PaperMaxing/blob/main/LICENSE",
+  readme: "https://github.com/MarioIbago/PaperMaxing#readme",
+  issues: "https://github.com/MarioIbago/PaperMaxing/issues",
+} as const;
+
 export const claims = [
   { type: "Descriptive", text: "The Transformer model removes recurrence and convolutions entirely, relying solely on attention mechanisms.", section: "Sec. 1", evidence: 3, level: "Strong", bars: [4, 4, 4, 3], color: "violet" as const },
   { type: "Causal", text: "Multi-head attention allows the model to jointly attend to information from different representation subspaces.", section: "Sec. 3.2", evidence: 4, level: "Strong", bars: [4, 4, 4, 4], color: "violet" as const },
@@ -32,4 +47,3 @@ export const decoderRows = [
   ["What this supports", "That attention alone is sufficient for strong sequence modeling across tasks (e.g., translation).", "check", "Sec. 4.3"],
   ["What not to conclude", "That attention is always better than recurrence or CNNs; results are task- and data-dependent.", "warning", "Discussion"],
 ] as const;
-

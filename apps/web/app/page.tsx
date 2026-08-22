@@ -6,6 +6,7 @@ import { Icon, IonicColumn } from "./components/icons";
 import { PageFrame } from "./components/shell";
 import { GreekDivider, PrivacyLine } from "./components/ui";
 import { TransformerFigure } from "./components/visuals";
+import { paperLinks } from "./components/data";
 
 const features = [
   { title: "Claims & Evidence", copy: "Automatically extract factual claims and link them to the exact evidence that supports them.", link: "Explore claims", href: "/papers/attention-is-all-you-need/claims", icon: "claims" as const },
@@ -17,8 +18,9 @@ const features = [
 function ImportCard() {
   const [tab, setTab] = useState<"pdf" | "doi" | "link">("pdf");
   const [fileName, setFileName] = useState("");
+  const [source, setSource] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
-  const tabContent = tab === "pdf" ? null : tab === "doi" ? <input className="import-input" placeholder="10.48550/arXiv.1706.03762" aria-label="DOI" /> : <input className="import-input" placeholder="https://arxiv.org/abs/1706.03762" aria-label="arXiv or URL" />;
+  const tabContent = tab === "pdf" ? null : tab === "doi" ? <input className="import-input" value={source} onChange={(event) => setSource(event.target.value)} placeholder="10.48550/arXiv.1706.03762" aria-label="DOI" /> : <input className="import-input" value={source} onChange={(event) => setSource(event.target.value)} placeholder="https://arxiv.org/abs/1706.03762" aria-label="arXiv or URL" />;
   return (
     <section className="import-card" aria-label="Import a paper">
       <div className="import-tabs" role="tablist">
@@ -39,8 +41,8 @@ function ProductPreview() {
     <div className="preview-toolbar"><span className="preview-monogram">P</span><span className="preview-back"><Icon name="chevronLeft" size={14} /> Papers</span><strong>Attention Is All You Need</strong><span className="preview-doi">arXiv:1706.03762 <Icon name="external" size={11} /></span><span className="preview-actions"><Icon name="bookmark" size={16} /><Icon name="download" size={16} /><Icon name="more" size={16} /></span></div>
     <div className="preview-body">
       <div className="preview-sidebar">{[["home", "Overview"], ["claims", "Claims"], ["figures", "Figures"], ["methods", "Methods"], ["references", "References"], ["authors", "Authors"], ["notebook", "Notebook"]].map((item, index) => { const [icon, label] = item as ["home" | "claims" | "figures" | "methods" | "references" | "authors" | "notebook", string]; return <span key={label} className={index === 0 ? "is-selected" : ""}><Icon name={icon} size={17} />{label}</span>; })}</div>
-      <div className="preview-claims"><div className="preview-heading"><span>Claims &amp; Evidence</span><b>128</b><Icon name="filter" size={14} /><Icon name="more" size={14} /></div>{["The proposed model removes recurrence and convolutions entirely.", "Multi-head attention allows the model to jointly attend to information from different representation subspaces.", "Positional encoding injects order information without recurrence."].map((claim, index) => <div className="preview-claim" key={claim}><p>{claim}</p><div><span>Claim</span><small>Sec. {index === 0 ? "1" : index === 1 ? "3.2" : "3.5"}</small></div><footer>Supported by {index + 2} pieces of evidence <Icon name="chevronDown" size={13} /></footer></div>)}</div>
-      <div className="preview-figure"><div className="preview-figure-heading"><span>Figure 2</span><Icon name="fullscreen" size={14} /><Icon name="more" size={14} /></div><div className="preview-figure-stage"><TransformerFigure mini /></div><p>The Transformer model architecture.</p><small>From: <a href="#source">Vaswani et al., 2017</a> <Icon name="external" size={10} /></small></div>
+      <div className="preview-claims"><div className="preview-heading"><span>Claims &amp; Evidence</span><Icon name="filter" size={14} /><Icon name="more" size={14} /></div>{["The proposed model removes recurrence and convolutions entirely.", "Multi-head attention allows the model to jointly attend to information from different representation subspaces.", "Positional encoding injects order information without recurrence."].map((claim, index) => <div className="preview-claim" key={claim}><p>{claim}</p><div><span>Claim</span><small>Sec. {index === 0 ? "1" : index === 1 ? "3.2" : "3.5"}</small></div><footer>Source passage linked <Icon name="chevronDown" size={13} /></footer></div>)}</div>
+      <div className="preview-figure"><div className="preview-figure-heading"><span>Figure 2</span><Icon name="fullscreen" size={14} /><Icon name="more" size={14} /></div><div className="preview-figure-stage"><TransformerFigure mini /></div><p>The Transformer model architecture.</p><small>From: <a href={paperLinks.abstract} target="_blank" rel="noreferrer">Vaswani et al., 2017</a> <Icon name="external" size={10} /></small></div>
     </div>
   </div>;
 }

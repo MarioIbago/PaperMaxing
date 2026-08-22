@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useState } from "react";
 import { Icon, IconName, LaurelMark } from "./icons";
+import { paperLinks, repositoryLinks } from "./data";
 
 export type SidebarSection = "paper" | "explore" | "settings";
 
@@ -11,24 +12,24 @@ const paperItems: Array<{ label: string; icon: IconName; href: string; key: stri
   { label: "Claims", icon: "claims", href: "/papers/attention-is-all-you-need/claims", key: "claims" },
   { label: "Figures", icon: "figures", href: "/papers/attention-is-all-you-need/figures", key: "figures" },
   { label: "Methods", icon: "methods", href: "/papers/attention-is-all-you-need/methods", key: "methods" },
-  { label: "References", icon: "references", href: "#references", key: "references" },
+  { label: "References", icon: "references", href: `${paperLinks.abstract}#references`, key: "references" },
   { label: "Authors", icon: "authors", href: "/papers/attention-is-all-you-need/authors", key: "authors" },
   { label: "Notebook", icon: "notebook", href: "/notebooks", key: "notebook" },
 ];
 
 const explorerItems: Array<{ label: string; icon: IconName; href: string; key: string }> = [
   { label: "Authors", icon: "authors", href: "/papers/attention-is-all-you-need/authors", key: "authors" },
-  { label: "Related Research", icon: "archive", href: "#related", key: "related" },
-  { label: "Topics", icon: "tag", href: "#topics", key: "topics" },
-  { label: "Institutions", icon: "building", href: "#institutions", key: "institutions" },
-  { label: "Timeline", icon: "calendar", href: "#timeline", key: "timeline" },
+  { label: "Related Research", icon: "archive", href: "/compare", key: "related" },
+  { label: "Topics", icon: "tag", href: "/papers/attention-is-all-you-need/authors#topics", key: "topics" },
+  { label: "Institutions", icon: "building", href: "/papers/attention-is-all-you-need/authors#institutions", key: "institutions" },
+  { label: "Timeline", icon: "calendar", href: "/compare#timeline", key: "timeline" },
   { label: "Notebook", icon: "notebook", href: "/notebooks", key: "notebook" },
 ];
 
 const settingsItems: Array<{ label: string; icon: IconName; href: string; key: string }> = [
-  { label: "General", icon: "settings", href: "#general", key: "general" },
-  { label: "Models", icon: "brain", href: "#models", key: "models" },
-  { label: "Privacy", icon: "shield", href: "#privacy", key: "privacy" },
+  { label: "General", icon: "settings", href: "/settings/open-source#general", key: "general" },
+  { label: "Models", icon: "brain", href: "/settings/open-source#models", key: "models" },
+  { label: "Privacy", icon: "shield", href: "/settings/open-source#privacy", key: "privacy" },
   { label: "Open Source", icon: "code", href: "/settings/open-source", key: "open-source" },
 ];
 
@@ -45,9 +46,8 @@ export function SiteHeader({ active = "", showBack = false, backHref = "/" }: { 
         <nav className="site-nav" aria-label="Main navigation">
           <Link className={active === "product" ? "is-active" : ""} href="/papers/attention-is-all-you-need">Product <Icon name="chevronDown" size={13} /></Link>
           <Link className={active === "open-source" ? "is-active" : ""} href="/settings/open-source">Open Source</Link>
-          <a href="#docs">Docs</a>
-          <a href="#community">Community <Icon name="chevronDown" size={13} /></a>
-          <a href="https://github.com/MarioIbago/PaperMaxing" target="_blank" rel="noreferrer">GitHub <Icon name="external" size={13} /></a>
+          <Link href="/settings/open-source#docs">Docs</Link>
+          <a href={repositoryLinks.repository} target="_blank" rel="noreferrer">GitHub <Icon name="external" size={13} /></a>
         </nav>
         <div className="site-header-actions">
           <Link className="button button-outline button-self-host" href="/settings/open-source"><Icon name="building" size={18} /> Self-hostable</Link>
@@ -58,8 +58,8 @@ export function SiteHeader({ active = "", showBack = false, backHref = "/" }: { 
         <div className="mobile-menu" role="dialog" aria-label="Navigation menu">
           <Link href="/papers/attention-is-all-you-need" onClick={() => setOpen(false)}>Product <Icon name="arrow" size={16} /></Link>
           <Link href="/settings/open-source" onClick={() => setOpen(false)}>Open Source <Icon name="arrow" size={16} /></Link>
-          <a href="#docs" onClick={() => setOpen(false)}>Docs <Icon name="arrow" size={16} /></a>
-          <a href="https://github.com/MarioIbago/PaperMaxing" target="_blank" rel="noreferrer">GitHub <Icon name="external" size={16} /></a>
+          <Link href="/settings/open-source#docs" onClick={() => setOpen(false)}>Docs <Icon name="arrow" size={16} /></Link>
+          <a href={repositoryLinks.repository} target="_blank" rel="noreferrer">GitHub <Icon name="external" size={16} /></a>
         </div>
       ) : null}
     </header>
@@ -73,7 +73,7 @@ export function WorkspaceSidebar({ selected = "overview", section = "paper", pap
       <div className="sidebar-brand-mini"><LaurelMark size={37} /></div>
       {section === "explore" ? <p className="sidebar-kicker">Research explorer</p> : null}
       {section === "settings" ? <p className="sidebar-kicker">Settings</p> : null}
-      {paper && section === "paper" ? <div className="sidebar-paper-context"><Link href="#papers"><Icon name="chevronLeft" size={14} /> Papers</Link><strong>Attention Is All You Need</strong><span>arXiv:1706.03762 <Icon name="external" size={12} /></span></div> : null}
+      {paper && section === "paper" ? <div className="sidebar-paper-context"><Link href="/"><Icon name="chevronLeft" size={14} /> Papers</Link><strong>Attention Is All You Need</strong><a href={paperLinks.abstract} target="_blank" rel="noreferrer">arXiv:1706.03762 <Icon name="external" size={12} /></a></div> : null}
       <nav className="sidebar-nav" aria-label={section === "explore" ? "Research explorer navigation" : section === "settings" ? "Settings navigation" : "Paper navigation"}>
         {items.map((item) => (
           <Link key={item.key} className={selected === item.key ? "is-selected" : ""} href={item.href}>
@@ -101,7 +101,7 @@ export function WorkspaceSidebar({ selected = "overview", section = "paper", pap
       {section === "settings" ? (
         <div className="sidebar-version-card"><small>You&apos;re running</small><strong>PaperMaxing<br />v1.0.0</strong><span>Open Source</span><LaurelMark size={62} withLetter={false} /></div>
       ) : null}
-      <div className="sidebar-privacy"><Icon name="shield" size={16} /><span>Your files are private and never shared.</span><a href="#privacy">Learn more <Icon name="arrow" size={14} /></a></div>
+      <div className="sidebar-privacy"><Icon name="shield" size={16} /><span>Your files are private and never shared.</span><Link href="/settings/open-source#privacy">Learn more <Icon name="arrow" size={14} /></Link></div>
     </aside>
   );
 }
@@ -109,19 +109,30 @@ export function WorkspaceSidebar({ selected = "overview", section = "paper", pap
 export function MobileBottomNav({ selected = "overview", labels = "paper" }: { selected?: string; labels?: "paper" | "explore" | "notebook" }) {
   const items = labels === "explore"
     ? [{ key: "home", label: "Home", icon: "home" as IconName, href: "/" }, { key: "explore", label: "Explore", icon: "search" as IconName, href: "/papers/attention-is-all-you-need/authors" }, { key: "upload", label: "Upload", icon: "upload" as IconName, href: "/" }, { key: "notebook", label: "Notebook", icon: "notebook" as IconName, href: "/notebooks" }, { key: "profile", label: "Profile", icon: "authors" as IconName, href: "/settings/open-source" }]
-    : labels === "notebook"
-      ? [{ key: "overview", label: "Overview", icon: "home" as IconName, href: "/papers/attention-is-all-you-need" }, { key: "claims", label: "Claims", icon: "claims" as IconName, href: "/papers/attention-is-all-you-need/claims" }, { key: "notebook", label: "Notebook", icon: "edit" as IconName, href: "/notebooks" }, { key: "graph", label: "Graph", icon: "graph" as IconName, href: "#graph" }, { key: "more", label: "More", icon: "more" as IconName, href: "#more" }]
-      : [{ key: "overview", label: "Overview", icon: "home" as IconName, href: "/papers/attention-is-all-you-need" }, { key: "claims", label: "Claims", icon: "claims" as IconName, href: "/papers/attention-is-all-you-need/claims" }, { key: "figures", label: "Figures", icon: "figures" as IconName, href: "/papers/attention-is-all-you-need/figures" }, { key: "notebook", label: "Notebook", icon: "notebook" as IconName, href: "/notebooks" }, { key: "more", label: "More", icon: "more" as IconName, href: "#more" }];
+      : labels === "notebook"
+      ? [{ key: "overview", label: "Overview", icon: "home" as IconName, href: "/papers/attention-is-all-you-need" }, { key: "claims", label: "Claims", icon: "claims" as IconName, href: "/papers/attention-is-all-you-need/claims" }, { key: "notebook", label: "Notebook", icon: "edit" as IconName, href: "/notebooks" }, { key: "graph", label: "Graph", icon: "graph" as IconName, href: "/notebooks#graph" }, { key: "more", label: "More", icon: "more" as IconName, href: "/settings/open-source" }]
+      : [{ key: "overview", label: "Overview", icon: "home" as IconName, href: "/papers/attention-is-all-you-need" }, { key: "claims", label: "Claims", icon: "claims" as IconName, href: "/papers/attention-is-all-you-need/claims" }, { key: "figures", label: "Figures", icon: "figures" as IconName, href: "/papers/attention-is-all-you-need/figures" }, { key: "notebook", label: "Notebook", icon: "notebook" as IconName, href: "/notebooks" }, { key: "more", label: "More", icon: "more" as IconName, href: "/settings/open-source" }];
   return <nav className="mobile-bottom-nav" aria-label="Mobile navigation">{items.map((item) => <Link key={item.key} className={selected === item.key ? "is-selected" : ""} href={item.href}><Icon name={item.icon} size={21} /><span>{item.label}</span></Link>)}</nav>;
 }
 
 export function PaperTopbar({ title = "Attention Is All You Need", action = "overview" }: { title?: string; action?: string }) {
   return (
     <div className="paper-topbar">
-      <div className="paper-topbar-left"><Link href="/papers/attention-is-all-you-need"><Icon name="chevronLeft" size={17} /> Papers</Link><span className="topbar-divider" /><strong>{title}</strong><span className="source-link-chip">arXiv:1706.03762 <Icon name="external" size={12} /></span></div>
-      <div className="paper-topbar-actions"><button className="icon-button" aria-label="Bookmark paper"><Icon name="bookmark" size={18} /></button><button className="icon-button" aria-label="Download paper"><Icon name="download" size={18} /></button><button className="icon-button" aria-label="More paper actions"><Icon name="more" size={18} /></button></div>
+      <div className="paper-topbar-left"><Link href="/papers/attention-is-all-you-need"><Icon name="chevronLeft" size={17} /> Papers</Link><span className="topbar-divider" /><strong>{title}</strong><a className="source-link-chip" href={paperLinks.abstract} target="_blank" rel="noreferrer">arXiv:1706.03762 <Icon name="external" size={12} /></a></div>
+      <PaperActions />
     </div>
   );
+}
+
+function PaperActions() {
+  const [bookmarked, setBookmarked] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  return <div className="paper-topbar-actions">
+    <button className={`icon-button ${bookmarked ? "is-active" : ""}`} aria-label={bookmarked ? "Remove bookmark" : "Bookmark paper"} aria-pressed={bookmarked} onClick={() => setBookmarked((value) => !value)}><Icon name="bookmark" size={18} /></button>
+    <a className="icon-button" aria-label="Open paper PDF" href={paperLinks.pdf} target="_blank" rel="noreferrer"><Icon name="download" size={18} /></a>
+    <button className="icon-button" aria-label="More paper actions" aria-expanded={menuOpen} onClick={() => setMenuOpen((value) => !value)}><Icon name="more" size={18} /></button>
+    {menuOpen ? <div className="paper-action-menu" role="menu"><a href={paperLinks.abstract} target="_blank" rel="noreferrer">Open source page</a><Link href="/settings/open-source#license" onClick={() => setMenuOpen(false)}>License &amp; source</Link></div> : null}
+  </div>;
 }
 
 export function MobilePaperContext({ label = "Back to papers", showCard = true }: { label?: string; showCard?: boolean }) {
@@ -134,12 +145,11 @@ export function PageFrame({ children, active = "", showFooter = true, className 
 
 export function FooterTrust() {
   return (
-    <footer className="footer-trust" id="community">
+    <footer className="footer-trust">
       <div><Icon name="code" size={20} /><span>100% Open Source</span></div>
       <div><Icon name="cloud" size={22} /><span>Self-host or use the cloud</span></div>
       <div><Icon name="lock" size={21} /><span>Privacy by design</span></div>
-      <div><Icon name="users" size={21} /><span>Built for researchers</span></div>
-      <a href="https://github.com/MarioIbago/PaperMaxing" target="_blank" rel="noreferrer"><Icon name="star" size={20} /><span>Star on GitHub</span><b>12.4k</b></a>
+      <a href={repositoryLinks.profile} target="_blank" rel="noreferrer"><Icon name="authors" size={21} /><span>Created by Mario Ibarra Gómez</span><Icon name="external" size={14} /></a>
     </footer>
   );
 }
