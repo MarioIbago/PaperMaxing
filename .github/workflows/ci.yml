@@ -1,0 +1,81 @@
+name: PaperMaxing CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  web:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Typecheck
+        run: npm --workspace @papermaxing/web run typecheck
+
+      - name: Build
+        run: npm run build
+
+      - name: Production smoke test
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm run start > /tmp/papermaxing.log 2>&1 &
+          APP_PID=$!
+          cleanup() {
+            kill "$APP_PID" 2>/dev/null || true
+            cat /tmp/papermaxing.log || true
+          }
+          trap cleanup EXIT
+
+          READY=0
+          for i in $(seq 1 45); do
+            if curl -fsS http://127.0.0.1:3000/api/health > /tmp/health.json; then
+              READY=1
+              break
+            fi
+            sleep 1
+          done
+
+          if [ "$READY" -ne 1 ]; then
+            echo "PaperMaxing did not become ready"
+            exit 1
+          fi
+
+          grep -q '"ok":true' /tmp/health.json
+          curl -fsS http://127.0.0.1:3000/ > /tmp/home.html
+          grep -q 'PaperMaxing' /tmp/home.html
+
+          curl -fsS http://127.0.0.1:3000/settings/open-source > /tmp/settings.html
+          grep -q 'Model provider' /tmp/settings.html
+
+          curl -fsS http://127.0.0.1:3000/api/providers > /tmp/providers.json
+          grep -q 'openrouter' /tmp/providers.json
+          grep -q 'anthropic' /tmp/providers.json
+          grep -q 'google' /tmp/providers.json
+
+          curl -fsS http://127.0.0.1:3000/api/notebooklm/health > /tmp/notebooklm.json
+          grep -q '"configured":false' /tmp/notebooklm.json
+
+          HTTP_CODE=$(curl -sS -o /tmp/provider-test.json -w '%{http_code}' \
+            -X POST http://127.0.0.1:3000/api/providers/test \
+            -H 'content-type: application/json' \
+            --data '{"provider":"openrouter","model":"openrouter/auto"}')
+          test "$HTTP_CODE" = "502"
+          grep -q 'OPENROUTER_API_KEY' /tmp/provider-test.json
