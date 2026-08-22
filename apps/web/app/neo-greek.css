@@ -1,0 +1,144 @@
+/* PaperMaxing neo-Greek editorial landing */
+.neo-landing-page { background: #f7f1e5; }
+.neo-landing-main { max-width: none; padding: 0 22px 72px; }
+.neo-hero {
+  position: relative;
+  overflow: hidden;
+  max-width: 1540px;
+  min-height: 820px;
+  margin: 22px auto 0;
+  border: 1px solid rgba(146,119,73,.28);
+  border-radius: 28px;
+  background:
+    linear-gradient(90deg, rgba(255,253,248,.93) 0%, rgba(255,253,248,.81) 38%, rgba(255,253,248,.34) 64%, rgba(255,253,248,.2) 100%),
+    url('/neo-greek-hero.svg') center/cover no-repeat;
+  box-shadow: 0 34px 90px rgba(75,55,28,.12);
+  isolation: isolate;
+}
+.neo-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(109,90,167,.045) 55%, rgba(122,122,76,.06));
+}
+.neo-hero-noise { position: absolute; inset: 0; pointer-events: none; opacity: .4; mix-blend-mode: multiply; background-image: radial-gradient(rgba(83,67,40,.11) .55px, transparent .55px); background-size: 6px 6px; }
+.neo-hero-inner { position: relative; z-index: 1; padding: 34px 48px 44px; }
+.neo-kicker { min-height: 46px; display: flex; align-items: center; justify-content: space-between; gap: 18px; border-bottom: 1px solid rgba(146,119,73,.24); font: 700 11px/1.2 var(--sans); letter-spacing: .15em; text-transform: uppercase; }
+.neo-kicker span { color: var(--violet); }
+.neo-kicker b { color: #695d4f; font-weight: 600; letter-spacing: .09em; }
+.neo-hero-grid { min-height: 690px; display: grid; grid-template-columns: minmax(520px,.92fr) minmax(560px,1.08fr); gap: 28px; align-items: center; padding-top: 34px; }
+.neo-hero-copy { max-width: 650px; padding: 16px 0 20px 24px; }
+.neo-overline { margin: 0 0 14px; color: #7d6847; font: 700 11px/1.2 var(--sans); letter-spacing: .17em; text-transform: uppercase; }
+.neo-hero-copy h1 { max-width: 700px; font-size: clamp(64px,6.1vw,104px); line-height: .88; letter-spacing: -4.6px; text-wrap: balance; }
+.neo-hero-copy h1 em { color: var(--violet); font-style: italic; }
+.neo-lede { max-width: 620px !important; margin: 22px 0 22px !important; color: #403b36 !important; font: 20px/1.45 var(--serif) !important; }
+.neo-stat-row { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 10px; margin: 0 0 18px; }
+.neo-stat-card { min-height: 84px; display: grid; grid-template-columns: 30px 1fr; grid-template-rows: auto auto; column-gap: 9px; align-content: center; padding: 12px 13px; border: 1px solid rgba(146,119,73,.22); border-radius: 14px; background: rgba(255,253,248,.67); backdrop-filter: blur(10px); box-shadow: 0 8px 24px rgba(77,58,32,.06); }
+.neo-stat-card > span { grid-row: 1 / 3; width: 30px; height: 30px; display: grid; place-items: center; align-self: center; border-radius: 50%; background: rgba(92,69,148,.1); color: var(--violet); }
+.neo-stat-card strong { font: 700 20px/1 var(--serif); }
+.neo-stat-card small { color: var(--muted); font: 11px/1.25 var(--sans); text-transform: uppercase; letter-spacing: .08em; }
+.neo-import-card { background: rgba(255,253,248,.86); border-color: rgba(151,124,80,.28); box-shadow: 0 22px 48px rgba(59,44,26,.12); backdrop-filter: blur(14px); }
+.neo-import-card .drop-zone, .neo-import-card .import-input { background: rgba(255,255,255,.52); }
+.neo-preview-stage { position: relative; min-width: 0; padding: 34px 0 18px 20px; }
+.neo-product-preview { position: relative; z-index: 2; height: 570px; transform: perspective(1500px) rotateY(-3deg) rotateX(1.5deg); transform-origin: center; border-color: rgba(139,111,70,.28); background: rgba(255,253,248,.93); box-shadow: 0 40px 90px rgba(62,44,21,.2); }
+.neo-float-card { position: absolute; z-index: 4; display: grid; gap: 4px; max-width: 260px; padding: 14px 16px; border: 1px solid rgba(151,124,80,.32); border-radius: 16px; background: rgba(255,253,248,.82); box-shadow: 0 20px 45px rgba(64,46,24,.12); backdrop-filter: blur(14px); }
+.neo-float-card b { font: 700 17px/1.15 var(--serif); }
+.neo-float-card span { color: #675f55; font: 10px/1.35 var(--sans); letter-spacing: .06em; text-transform: uppercase; }
+.neo-float-a { top: 6px; right: 4%; }
+.neo-float-b { bottom: 4px; left: -8px; max-width: 220px; }
+.neo-provider-strip { max-width: 1450px; min-height: 82px; display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 24px; margin: 18px auto 0; padding: 14px 24px; border: 1px solid rgba(151,124,80,.2); border-radius: 18px; background: rgba(255,253,248,.7); }
+.neo-provider-strip > span { color: #77674f; font: 700 11px var(--sans); letter-spacing: .13em; text-transform: uppercase; }
+.neo-provider-strip > div { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px; }
+.neo-provider-strip b { padding: 8px 12px; border: 1px solid rgba(92,69,148,.16); border-radius: 999px; background: rgba(92,69,148,.055); color: #4b3b72; font: 600 12px var(--sans); }
+.neo-provider-strip a { display: inline-flex; align-items: center; gap: 7px; color: var(--violet); font: 15px var(--serif); }
+.neo-editorial-section { max-width: 1450px; display: grid; grid-template-columns: .82fr 1.18fr; gap: 54px; align-items: center; margin: 100px auto 0; }
+.neo-editorial-copy { max-width: 590px; padding-left: 22px; }
+.neo-editorial-copy h2, .neo-notebook-copy h2, .neo-final-cta h2 { margin-bottom: 24px; font-size: clamp(46px,4.2vw,72px); line-height: .96; letter-spacing: -2.3px; }
+.neo-editorial-copy > p:not(.neo-overline), .neo-notebook-copy > p:not(.neo-overline) { color: #50493f; font: 18px/1.55 var(--serif); }
+.neo-research-art { min-height: 610px; position: relative; overflow: hidden; border: 1px solid rgba(151,124,80,.24); border-radius: 28px; background: url('/neo-greek-research.svg') center/cover no-repeat; box-shadow: 0 28px 70px rgba(61,44,22,.11); }
+.neo-art-caption { position: absolute; right: 26px; bottom: 26px; width: min(360px,calc(100% - 52px)); display: grid; grid-template-columns: 58px 1fr; padding: 18px; border: 1px solid rgba(151,124,80,.28); border-radius: 16px; background: rgba(255,253,248,.82); backdrop-filter: blur(13px); }
+.neo-art-caption span { grid-row: 1 / 3; align-self: center; color: var(--violet); font: 700 36px/1 var(--serif); }
+.neo-art-caption b { font: 700 19px/1.2 var(--serif); }
+.neo-art-caption small { margin-top: 4px; color: var(--muted); font: 12px/1.4 var(--sans); }
+.neo-capability-grid { max-width: 1450px; margin: 96px auto 0; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 16px; }
+.neo-capability-card { position: relative; min-height: 300px; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; padding: 24px; border-radius: 20px; border-color: rgba(151,124,80,.22); background: rgba(255,253,248,.72); box-shadow: 0 16px 40px rgba(62,47,27,.055); }
+.neo-capability-card::after { content: ""; position: absolute; right: -44px; top: -46px; width: 150px; height: 150px; border: 1px solid rgba(92,69,148,.12); border-radius: 50%; }
+.neo-card-number { position: absolute; top: 18px; right: 20px; color: rgba(92,69,148,.32); font: 700 30px/1 var(--serif); }
+.neo-capability-card .capability-icon { width: 54px; height: 54px; display: grid; place-items: center; border: 1px solid rgba(151,124,80,.24); border-radius: 50%; background: rgba(255,255,255,.44); color: var(--violet); }
+.neo-capability-card h2 { margin-top: 24px; font-size: 28px; }
+.neo-capability-card p { min-height: 88px; color: #61584d; font: 15px/1.5 var(--serif); }
+.neo-capability-card a { display: inline-flex; align-items: center; gap: 8px; color: var(--violet); font: 15px var(--serif); }
+.neo-notebook-section { max-width: 1450px; display: grid; grid-template-columns: 1.05fr .95fr; gap: 58px; align-items: center; margin: 110px auto 0; padding: 28px; border: 1px solid rgba(151,124,80,.22); border-radius: 30px; background: linear-gradient(135deg,rgba(255,253,248,.78),rgba(239,229,211,.65)); }
+.neo-notebook-art { min-height: 560px; border-radius: 22px; background: url('/neo-greek-notebook.svg') center/cover no-repeat; box-shadow: inset 0 0 0 1px rgba(151,124,80,.14); }
+.neo-notebook-copy { padding: 34px 26px 34px 0; }
+.neo-notebook-copy code { padding: 2px 5px; border-radius: 5px; background: rgba(92,69,148,.08); color: var(--violet-deep); font: 13px var(--mono); }
+.neo-code-flow { display: flex; align-items: center; flex-wrap: wrap; gap: 9px; margin: 25px 0; }
+.neo-code-flow span { padding: 8px 11px; border: 1px solid rgba(92,69,148,.18); border-radius: 10px; background: rgba(255,255,255,.54); font: 600 11px var(--sans); }
+.neo-code-flow i { color: var(--gold); font-style: normal; }
+.neo-notebook-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.neo-final-cta { max-width: 1450px; margin: 100px auto 0; padding: 82px 26px 76px; text-align: center; border-top: 1px solid rgba(151,124,80,.22); border-bottom: 1px solid rgba(151,124,80,.22); background: radial-gradient(circle at 50% 45%,rgba(255,255,255,.95),rgba(247,241,229,.35) 55%,transparent 75%); }
+.neo-final-cta h2 { margin-left: auto; margin-right: auto; max-width: 850px; font-size: clamp(54px,5vw,82px); }
+.neo-final-cta > div { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+
+@media (max-width: 1220px) {
+  .neo-hero-grid { grid-template-columns: minmax(450px,.94fr) minmax(460px,1.06fr); }
+  .neo-hero-copy h1 { font-size: clamp(58px,6vw,82px); }
+  .neo-product-preview { transform: none; }
+  .neo-capability-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .neo-editorial-section, .neo-notebook-section { gap: 32px; }
+}
+
+@media (max-width: 980px) {
+  .neo-landing-main { padding-left: 14px; padding-right: 14px; }
+  .neo-hero { min-height: auto; border-radius: 22px; background-position: 58% center; }
+  .neo-hero-inner { padding: 22px 22px 34px; }
+  .neo-kicker { align-items: flex-start; flex-direction: column; justify-content: center; padding: 10px 0 14px; }
+  .neo-hero-grid { min-height: auto; grid-template-columns: 1fr; gap: 18px; }
+  .neo-hero-copy { max-width: 680px; padding: 38px 4px 10px; }
+  .neo-hero-copy h1 { font-size: clamp(60px,10vw,88px); }
+  .neo-lede { max-width: 600px !important; }
+  .neo-preview-stage { padding: 16px 0 24px; }
+  .neo-product-preview { height: 520px; }
+  .neo-float-a { right: 12px; }
+  .neo-float-b { left: 12px; bottom: 0; }
+  .neo-provider-strip { grid-template-columns: 1fr; justify-items: center; text-align: center; }
+  .neo-editorial-section, .neo-notebook-section { grid-template-columns: 1fr; }
+  .neo-editorial-copy { max-width: 760px; padding: 0 10px; }
+  .neo-research-art, .neo-notebook-art { min-height: 500px; }
+  .neo-notebook-copy { padding: 10px; }
+}
+
+@media (max-width: 700px) {
+  .neo-landing-main { padding: 0 8px 44px; }
+  .neo-hero { margin-top: 8px; border-radius: 18px; background:
+    linear-gradient(180deg,rgba(255,253,248,.92),rgba(255,253,248,.82) 58%,rgba(255,253,248,.5)),
+    url('/neo-greek-hero.svg') 54% center/cover no-repeat; }
+  .neo-hero-inner { padding: 14px 14px 24px; }
+  .neo-kicker { font-size: 9px; }
+  .neo-hero-copy { padding-top: 30px; }
+  .neo-hero-copy h1 { font-size: clamp(48px,15vw,70px); line-height: .9; letter-spacing: -3px; }
+  .neo-lede { margin-top: 18px !important; font-size: 17px !important; }
+  .neo-stat-row { grid-template-columns: 1fr; }
+  .neo-stat-card { min-height: 66px; }
+  .neo-import-card { padding: 10px 11px 12px; }
+  .neo-import-card .import-tabs { grid-template-columns: 1fr; }
+  .neo-import-card .import-tabs button { min-height: 38px; }
+  .neo-import-card .import-submit { width: 100%; }
+  .neo-preview-stage { display: none; }
+  .neo-provider-strip { margin-top: 10px; padding: 18px 12px; }
+  .neo-provider-strip > div { gap: 6px; }
+  .neo-provider-strip b { padding: 7px 9px; font-size: 10px; }
+  .neo-editorial-section { margin-top: 70px; gap: 28px; }
+  .neo-editorial-copy h2, .neo-notebook-copy h2, .neo-final-cta h2 { font-size: clamp(40px,11vw,58px); letter-spacing: -1.8px; }
+  .neo-research-art, .neo-notebook-art { min-height: 390px; border-radius: 18px; }
+  .neo-art-caption { right: 14px; bottom: 14px; width: calc(100% - 28px); }
+  .neo-capability-grid { grid-template-columns: 1fr; margin-top: 64px; }
+  .neo-capability-card { min-height: 260px; }
+  .neo-notebook-section { margin-top: 74px; padding: 12px; border-radius: 22px; }
+  .neo-notebook-copy { padding: 16px 6px 22px; }
+  .neo-code-flow { gap: 6px; }
+  .neo-code-flow span { font-size: 10px; }
+  .neo-final-cta { margin-top: 74px; padding: 58px 12px; }
+}
