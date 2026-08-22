@@ -15,6 +15,9 @@ PaperMaxing CI verifies the deployable web runtime independently of external mod
 - verifies `/api/providers` exposes OpenRouter, Anthropic, and Gemini without exposing secret values
 - verifies NotebookLM reports an unconfigured state cleanly when no gateway credentials exist
 - verifies a real OpenRouter connection attempt fails explicitly when `OPENROUTER_API_KEY` is absent instead of returning demo data
+- launches Chromium with Playwright and checks Landing + Settings at 320, 375, 390, 430, 768, 1024, 1280, and 1440 px
+- fails if either tested page creates horizontal overflow at those viewport widths
+- verifies the mobile model selector remains visible and usable
 
 ## Requires credentials or external services
 
